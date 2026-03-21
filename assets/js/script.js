@@ -32,7 +32,7 @@ const createURL = () => {
     const authorURL = `${URL}${author}`;
     getData(authorURL).then((data) =>
       data.data.forEach((song) => {
-        console.log(song);
+        clearSections();
         createCards(song, author);
       }),
     );
@@ -41,8 +41,8 @@ const createURL = () => {
 
 createURL();
 
-const createCards = (song, serachedAuthor) => {
-  const sectionId = `${serachedAuthor.toLowerCase()}Section`;
+const createCards = (song, searchedAuthor) => {
+  const sectionId = `${searchedAuthor.toLowerCase()}Section`;
   const authorSection = document.getElementById(sectionId);
 
   const col = document.createElement("div");
@@ -81,12 +81,12 @@ const createCards = (song, serachedAuthor) => {
   title.textContent = songTitle;
 
   const songDuration = document.createElement("p");
-  songDuration.setAttribute("class", "card-text mb-0 text-light fw-bold");
+  songDuration.setAttribute("class", "card-text mb-0 text-light fw-bold ");
   songDuration.textContent = parseDuration(song.duration);
 
   const artistName = song.artist.name;
   const artist = document.createElement("p");
-  artist.setAttribute("class", "card-text small text-secondary");
+  artist.setAttribute("class", "card-text small text-secondary artist");
   artist.textContent = artistName;
 
   songTopContainer.append(title, songDuration);
@@ -97,12 +97,48 @@ const createCards = (song, serachedAuthor) => {
 
   if (authorSection) {
     authorSection.append(col);
-    authorSection.parentNode.classList.remove("d-none");
-  } else {
-    console.warn(
-      `Attenzione: non ho trovato nessun elemento con ID "${sectionId}" nell'HTML.`,
-    );
   }
+};
+
+const clearSections = (state) => {
+  authorsList.forEach((author) => {
+    const sectionId = `${author.toLowerCase()}Section`;
+    const authorSection = document.getElementById(sectionId);
+
+    if (state) {
+      authorSection.parentNode.classList.add("d-none");
+    } else {
+      authorSection.parentNode.classList.remove("d-none");
+    }
+  });
+};
+
+const createSection = (searched, searchTitle) => {
+  const mainPAge = document.querySelector(".mainPage");
+
+  const row = document.createElement("div");
+  row.setAttribute("class", "row search-result-row");
+
+  const col = document.createElement("div");
+  col.setAttribute("class", "col-10");
+
+  const searchContainer = document.createElement("div");
+  searchContainer.setAttribute("id", "search-result");
+
+  const sectionTitle = document.createElement("h2");
+  sectionTitle.textContent = searchTitle;
+
+  const searchedSection = document.createElement("div");
+  searchedSection.setAttribute("id", `${searched}Section`);
+  searchedSection.setAttribute(
+    "class",
+    "row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3",
+  );
+
+  searchContainer.append(sectionTitle, searchedSection);
+  col.appendChild(searchContainer);
+  row.appendChild(col);
+  mainPAge.appendChild(row);
 };
 
 const parseDuration = (time) => {
@@ -122,3 +158,37 @@ const setupPlayButton = (btn) => {
     btn.classList.toggle("fa-pause");
   });
 };
+
+const search = () => {
+  const searchInputValue = document
+    .querySelector("#searchField")
+    .value.toLowerCase();
+
+  const oldSearches = document.querySelectorAll(".search-result-row");
+  oldSearches.forEach((row) => row.remove());
+
+  if (searchInputValue !== "") {
+    const authorURL = `${URL}${searchInputValue}`;
+    getData(authorURL).then((data) => {
+      clearSections(true);
+      if (data.data.length > 0) {
+        createSection(searchInputValue, "Risultato:");
+        data.data.forEach((song) => {
+          createCards(song, searchInputValue);
+        });
+      } else {
+        console.warn("Nessun risultato trovato");
+      }
+    });
+  } else {
+    clearSections(false);
+  }
+};
+
+const searchInput = document
+  .querySelector("#searchField")
+  .addEventListener("keypress", (e) => {
+    if (e.key == "Enter") {
+      search();
+    }
+  });

@@ -160,6 +160,7 @@ ul {
 #eminem,
 #metallica,
 #queen,
+.search-result-row,
 #searchResults,
 #artist-tracks {
   color: white;
@@ -230,10 +231,28 @@ ul {
 
 
 /* CARD */
+
+@keyframes glow {
+  from {
+    box-shadow: 0;
+  }
+
+  to {
+    box-shadow: 0 0 12px 10px rgba(213, 213, 213, 0.586);
+  }
+
+}
+
 div.card {
   background-color: #161719;
   border-radius: 12px;
   cursor: pointer;
+  transition: scale 0.3s ease-in-out;
+}
+
+div.card:hover {
+  scale: 1.05;
+  animation: glow 0.4s infinite alternate 0.1s ease-in-out;
 }
 
 div.card img {
@@ -257,7 +276,19 @@ div.card i.playBtn {
   transition: all 0.3s ease-in-out;
 }
 
-div.card div.imgContainer:hover i.playBtn {
+div.card:hover i.playBtn {
   opacity: 1;
-  bottom: 5%
+  bottom: 5%;
+}
+
+div.card h5 {
+  transition: color 0.3s ease-in;
+}
+
+div.card h5:hover {
+  color: #28A745
+}
+
+div.card .artist:hover {
+  text-decoration: underline;
 }
