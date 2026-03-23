@@ -292,3 +292,22 @@ div.card h5:hover {
 div.card .artist:hover {
   text-decoration: underline;
 }
+
+div.card i.addPref:hover {
+  color: rgb(255, 230, 88)
+}
+
+div.card i.addPref.fa-check {
+  color: green
+}
+
+
+/* Modal */
+
+div#preferredListModal .modal-dialog button:first-of-type {
+  background-color: red
+}
+
+div#preferredListModal .modal-body ul li {
+  font-weight: 700;
+}

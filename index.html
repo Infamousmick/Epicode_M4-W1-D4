@@ -67,7 +67,11 @@
                       </a>
                     </li>
                     <li>
-                      <a class="nav-item nav-link" href="#"
+                      <a
+                        class="nav-item nav-link"
+                        href="#"
+                        data-toggle="modal"
+                        data-target="#preferredListModal"
                         ><i class="fas fa-book-open fa-lg"></i>&nbsp; Your
                         Library</a
                       >
@@ -98,6 +102,48 @@
                       </div>
                     </li>
                   </ul>
+                </div>
+              </div>
+
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                id="preferredListModal"
+                data-backdrop="static"
+                data-keyboard="false"
+                tabindex="-1"
+                aria-labelledby="staticBackdropLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="preferredListTitle">
+                        Preferiti
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="list-group"></ul>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button type="button" class="btn btn-primary">
+                        Understood
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

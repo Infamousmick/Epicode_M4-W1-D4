@@ -84,13 +84,24 @@ const createCards = (song, searchedAuthor) => {
   songDuration.setAttribute("class", "card-text mb-0 text-light fw-bold ");
   songDuration.textContent = parseDuration(song.duration);
 
+  const songBottomContainer = document.createElement("div");
+  songBottomContainer.setAttribute(
+    "class",
+    "d-flex justify-content-between align-items-center gap-2 mb-1 flex-nowrap",
+  );
+
   const artistName = song.artist.name;
   const artist = document.createElement("p");
-  artist.setAttribute("class", "card-text small text-secondary artist");
+  artist.setAttribute("class", "card-text small text-secondary artist mb-0");
   artist.textContent = artistName;
 
+  const addPref = document.createElement("i");
+  addPref.setAttribute("class", "addPref fa-solid fa-plus");
+  setupPrefButton(addPref, songTitle);
+
   songTopContainer.append(title, songDuration);
-  cardBody.append(songTopContainer, artist);
+  songBottomContainer.append(artist, addPref);
+  cardBody.append(songTopContainer, songBottomContainer);
   imageContainer.append(image, playButton);
   card.append(imageContainer, cardBody);
   col.appendChild(card);
@@ -159,6 +170,21 @@ const setupPlayButton = (btn) => {
   });
 };
 
+const prefList = [];
+const setupPrefButton = (btn, title) => {
+  btn.addEventListener("click", () => {
+    if (btn.classList.contains("fa-check")) {
+      prefList.splice(prefList.indexOf(title), 1);
+    } else {
+      const object = { songName: title };
+      prefList.push(object);
+    }
+    btn.classList.toggle("fa-plus");
+    btn.classList.toggle("fa-check");
+    createModalList();
+  });
+};
+
 const search = () => {
   const searchInputValue = document
     .querySelector("#searchField")
@@ -192,3 +218,15 @@ const searchInput = document
       search();
     }
   });
+
+const createModalList = () => {
+  const modalUl = document.querySelector("#preferredListModal .modal-body ul");
+  modalUl.innerHTML = "";
+  prefList.forEach((pref) => {
+    console.log(pref);
+    const li = document.createElement("li");
+    li.textContent = pref.songName;
+    li.setAttribute("class", "list-group-item text-dark");
+    modalUl.appendChild(li);
+  });
+};
